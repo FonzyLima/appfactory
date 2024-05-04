@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TextInput } from "react-native";
 import React from "react";
 import Footer from "./components/shared/Footer";
+import Recipe from "./components/shared/Recipe";
 import Icon from "react-native-vector-icons/EvilIcons";
 import Icons from "react-native-vector-icons/Ionicons";
 import { useEffect, useState } from "react";
@@ -9,6 +10,9 @@ interface Recipe {
     healthLabels: string[];
     ingredientLines:string[];
     calories:number;
+    image:string;
+    source:string;
+    dishType:string;
   }
   
 const Page = () => {
@@ -16,15 +20,18 @@ const Page = () => {
   const getRecipes = async () => {
     try {
       const response = await fetch(
-        "https://api.edamam.com/api/recipes/v2?type=public&q=all&app_id=67f43a52&app_key= 257a9e063564019af4d5257ab5033236"
+        "https://api.edamam.com/api/recipes/v2?type=public&q=thai&app_id=67f43a52&app_key=257a9e063564019af4d5257ab5033236"
       );
       const json = await response.json();
-      console.log("here", json.hits[0].recipe.calories);
+      console.log("here", json.hits[0].recipe.image);
       const recipes: Recipe[] = json.hits.map((hit: any) => ({
         label: hit.recipe.label,
         calories: hit.recipe.calories || 0,
         healthLabels: hit.recipe.healthLabels || [],
-
+        image: hit.recipe.image || '',
+        source:hit.recipe.source || '',
+        dishType:hit.recipe.dishType || '',
+        ingredientList:hit.recipe.ingredientLines || [],
 // Default to 0 if calories are not available
       }));
       setRecipe(recipes);
@@ -40,22 +47,17 @@ const Page = () => {
       <View style={styles.searchBar}>
         <View>
           <Icon name="search" size={30} color="#A1AEB1" />
-        </View>
+        </View> 
       
         <TextInput style={{ flexGrow: 1 }} maxLength={36} />
         <View>
           <Icons name="reorder-three" size={30} color="#A1AEB1" />
         </View>
       </View>
-      <ScrollView>
+      <ScrollView >
       {recipe.length > 0 ? (
         recipe.map((hit, index) => (
-          <View key={index}>
-            <Text>Label: {hit.label}</Text>
-    
-
-            {/* Add more properties as needed */}
-          </View>
+         <Recipe key={index} name={hit.label} calories={hit.calories} image={hit.image} source={hit.source} ingredientList={hit.ingredientLines}/>
         ))
       ) : (
         <Text>Loading...</Text>
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
     padding: 16,
     height: "100%",
     backgroundColor: "pink",
+    gap:20
   },
   searchBar: {
     flexDirection: "row",

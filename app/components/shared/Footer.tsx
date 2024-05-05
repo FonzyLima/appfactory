@@ -1,21 +1,23 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome6";
+import { useRouter } from "expo-router";
 const Footer = () => {
+  const router = useRouter()
   return (
     <View style={style.container}>
-      <View style={style.iconContainer}>
+      <TouchableOpacity style={style.iconContainer} onPress={()=>router.replace("/Home")}>
         <Icon name="bowl-rice" size={30} color="#A1AEB1" />
         <Text style={style.iconText}>Recipes</Text>
-      </View>
-      <View style={style.iconContainer}>
+      </TouchableOpacity>
+      <TouchableOpacity style={style.iconContainer} onPress={()=>router.replace("/Favorites")}>
         <Icon name="heart" size={30} color="#A1AEB1" />
         <Text style={style.iconText}>Favorites</Text>
-      </View>
-      <View style={style.iconContainer}>
+      </TouchableOpacity>
+      <TouchableOpacity style={style.iconContainer} onPress={()=>router.replace("/Grocery")}>
         <Icon name="list-check" size={30} color="#A1AEB1" />
         <Text style={style.iconText}>Grocery List</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -28,7 +30,7 @@ const style = StyleSheet.create({
     justifyContent:"space-around",
     paddingVertical:16,
     backgroundColor:"white",
-  
+    borderTopWidth:0.5
   },
   iconContainer:{
     alignItems:"center",

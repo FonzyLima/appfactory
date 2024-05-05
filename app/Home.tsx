@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet, TextInput } from "react-native";
+import { View, Text, ScrollView, StyleSheet, TextInput,Image } from "react-native";
 import React from "react";
 import Footer from "./components/shared/Footer";
 import Recipe from "./components/shared/Recipe";
@@ -91,8 +91,11 @@ const Page = () => {
             />
           ))
         ) : search ? (
-          <Text>Loading...</Text>
-        ) : <Text>Search to show recipes</Text>}
+          <View style={{justifyContent:"center",alignItems:"center",flex:1}}>
+          <Image style={{height:80,width:80}} source={require("@/assets/images/loading.gif")}/>
+          </View>
+
+        ) :  <Text>Search to show recipes</Text>}
       </ScrollView>
       <View />
       <Footer />

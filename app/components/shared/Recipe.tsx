@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Link,router, useRouter } from "expo-router";
+import { Link, router, useRouter } from "expo-router";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 const Recipe = ({
@@ -8,25 +8,46 @@ const Recipe = ({
   image,
   source,
   ingredientList,
-  protein,carbs,fat
+  protein,
+  carbs,
+  fat,
 }: {
   name: string;
   calories: number;
   image: string;
   source: string;
-  ingredientList:string[];
-  protein:number;
-  carbs:number;
-  fat:number;
+  ingredientList: string[];
+  protein: number;
+  carbs: number;
+  fat: number;
 }) => {
-  const router = useRouter()
-  const encodedURL = encodeURIComponent(image)
+  const router = useRouter();
+  const encodedURL = encodeURIComponent(image);
   return (
-    <TouchableOpacity onPress={()=>router.push({pathname:`/${name}`, params:{name:name,calories:calories,image:encodedURL,source:source,ingredientList: JSON.stringify(ingredientList),protein,carbs,fat}})}>
+    <TouchableOpacity
+      onPress={() =>
+        router.push({
+          pathname: `/${name}`,
+          params: {
+            name: name,
+            calories: calories,
+            image: encodedURL,
+            source: source,
+            ingredientList: JSON.stringify(ingredientList),
+            protein:protein,
+            carbs:carbs,
+            fat:fat,
+          },
+        })
+      }
+    >
       <View style={styles.container}>
+     
         <Image style={styles.image} source={{ uri: image }} />
         <View style={styles.bottomContainer}>
-          <Text selectable={true} style={styles.recipeName}>{name}</Text>
+          <Text selectable={true} style={styles.recipeName}>
+            {name}
+          </Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >

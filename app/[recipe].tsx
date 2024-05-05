@@ -8,10 +8,13 @@ import {
 } from "react-native";
 import React from "react";
 import Footer from "./components/shared/Footer";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams,router } from "expo-router";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import Icons from "react-native-vector-icons/MaterialCommunityIcons";
+import Heart from "react-native-vector-icons/AntDesign"
+import { useState,useEffect } from "react";
 const Page = () => {
+  const [favorite,setFavorite] = useState(false)
   const {
     recipe,
     name,
@@ -24,11 +27,10 @@ const Page = () => {
     calories,
   } = useLocalSearchParams();
   const parsedIngredientList = ingredientList?JSON.parse(ingredientList):[];
-
+  
   return (
     <View style={styles.container}>
       <View><Image style={styles.image} source={{ uri: image as any}} /></View>
-      
       <ScrollView
         contentContainerStyle={{
           paddingVertical: 16,
@@ -37,8 +39,9 @@ const Page = () => {
         <View style={styles.headerContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.nameText}>{name}</Text>
-            <TouchableOpacity>
-              <Icon name="heart" size={30} color="#A1AEB1" />
+            <TouchableOpacity onPress={()=>setFavorite(!favorite)}>
+              {favorite ? <Heart name="heart" size={30} color="red" />: <Heart name="hearto" size={30} color="red" /> }
+              
             </TouchableOpacity>
           </View>
           <Text style={styles.grayText}>{source}</Text>

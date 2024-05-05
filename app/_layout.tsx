@@ -51,7 +51,7 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="Home" options={{title:"Cilantro",headerTitleAlign:"center"}}/>
-        <Stack.Screen name="[recipe]" options={{title:"Cilantro",headerTitleAlign:"center"}}/>
+        <Stack.Screen name="[recipe]" options={({ route }:{route:any}) => ({ title: decodeURIComponent(route.params.recipe), headerTitleAlign: "center" })}/>
         <Stack.Screen name="Favorites"/>
         <Stack.Screen name="Grocery"/>
       </Stack>

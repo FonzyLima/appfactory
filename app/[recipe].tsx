@@ -23,7 +23,7 @@ const Page = () => {
     fat,
     calories,
   } = useLocalSearchParams();
-  const parsedIngredientList = JSON.parse(ingredientList);
+  const parsedIngredientList = ingredientList?JSON.parse(ingredientList):[];
 
   return (
     <View style={styles.container}>

@@ -29,7 +29,7 @@ const Page = () => {
       );
       const json = await response.json();
       const recipes: Recipe[] = json.hits.map((hit: any) => ({
-        label: hit.recipe.label,
+        label: hit.recipe.label || '',
         calories: hit.recipe.calories || 0,
         healthLabels: hit.recipe.healthLabels || [],
         image: hit.recipe.image || '',
@@ -42,7 +42,6 @@ const Page = () => {
           carbs: hit.recipe.totalNutrients.CHOCDF?.quantity || 0
         }
       }));
-      console.log(typeof(json.hits[0].recipe.ingredientLines))
       setRecipe(recipes);
     } catch (error) {
       console.error(error);

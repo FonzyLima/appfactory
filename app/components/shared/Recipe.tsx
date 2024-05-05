@@ -7,21 +7,26 @@ const Recipe = ({
   calories,
   image,
   source,
-  ingredientList
+  ingredientList,
+  protein,carbs,fat
 }: {
   name: string;
   calories: number;
   image: string;
   source: string;
   ingredientList:string[];
+  protein:number;
+  carbs:number;
+  fat:number;
 }) => {
   const router = useRouter()
+  const encodedURL = encodeURIComponent(image)
   return (
-    <TouchableOpacity onPress={()=>router.push({pathname:`/${name}`, params:{name:name,calories:calories,image:image,source:source}})}>
+    <TouchableOpacity onPress={()=>router.push({pathname:`/${name}`, params:{name:name,calories:calories,image:encodedURL,source:source,ingredientList: JSON.stringify(ingredientList),protein,carbs,fat}})}>
       <View style={styles.container}>
         <Image style={styles.image} source={{ uri: image }} />
         <View style={styles.bottomContainer}>
-          <Text style={styles.recipeName}>{name}</Text>
+          <Text selectable={true} style={styles.recipeName}>{name}</Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >

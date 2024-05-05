@@ -13,6 +13,11 @@ interface Recipe {
     image:string;
     source:string;
     dishType:string;
+    nutrients:{
+      protein:number;
+      fat:number;
+      carbs:number
+    }
   }
   
 const Page = () => {
@@ -23,7 +28,6 @@ const Page = () => {
         "https://api.edamam.com/api/recipes/v2?type=public&q=thai&app_id=67f43a52&app_key=257a9e063564019af4d5257ab5033236"
       );
       const json = await response.json();
-      console.log("here", json.hits[0].recipe.image);
       const recipes: Recipe[] = json.hits.map((hit: any) => ({
         label: hit.recipe.label,
         calories: hit.recipe.calories || 0,
@@ -31,9 +35,14 @@ const Page = () => {
         image: hit.recipe.image || '',
         source:hit.recipe.source || '',
         dishType:hit.recipe.dishType || '',
-        ingredientList:hit.recipe.ingredientLines || [],
-// Default to 0 if calories are not available
+        ingredientLines:hit.recipe.ingredientLines || [],
+        nutrients:{
+          protein: hit.recipe.totalNutrients.PROCNT?.quantity || 0,
+          fat: hit.recipe.totalNutrients.FAT?.quantity || 0,
+          carbs: hit.recipe.totalNutrients.CHOCDF?.quantity || 0
+        }
       }));
+      console.log(typeof(json.hits[0].recipe.ingredientLines))
       setRecipe(recipes);
     } catch (error) {
       console.error(error);
@@ -57,7 +66,7 @@ const Page = () => {
       <ScrollView >
       {recipe.length > 0 ? (
         recipe.map((hit, index) => (
-         <Recipe key={index} name={hit.label} calories={hit.calories} image={hit.image} source={hit.source} ingredientList={hit.ingredientLines}/>
+         <Recipe key={index} name={hit.label} calories={hit.calories} image={hit.image} source={hit.source} ingredientList={hit.ingredientLines} protein={hit.nutrients.protein} carbs={hit.nutrients.carbs} fat={hit.nutrients.fat}/>
         ))
       ) : (
         <Text>Loading...</Text>

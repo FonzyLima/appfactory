@@ -57,12 +57,12 @@ const Page = () => {
           <Icon name="search" size={30} color="#A1AEB1" />
         </View> 
       
-        <TextInput style={{ flexGrow: 1 }} maxLength={36} />
+        <TextInput style={{ flexGrow: 1 }} maxLength={36} placeholder="Search Recipe Here" />
         <View>
           <Icons name="reorder-three" size={30} color="#A1AEB1" />
         </View>
       </View>
-      <ScrollView >
+      <ScrollView contentContainerStyle={{paddingBottom:80}}>
       {recipe.length > 0 ? (
         recipe.map((hit, index) => (
          <Recipe key={index} name={hit.label} calories={hit.calories} image={hit.image} source={hit.source} ingredientList={hit.ingredientLines} protein={hit.nutrients.protein} carbs={hit.nutrients.carbs} fat={hit.nutrients.fat}/>
@@ -71,6 +71,7 @@ const Page = () => {
         <Text>Loading...</Text>
       )}
       </ScrollView>
+      <View/>
       <Footer />
     </View>
   );
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     height: "100%",
-    backgroundColor: "pink",
+    backgroundColor: "#fff",
     gap:20
   },
   searchBar: {

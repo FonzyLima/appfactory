@@ -6,7 +6,7 @@ const Page = () => {
     <View style={styles.container}>
      <Text style={styles.header}>Here is your grocery list</Text>
      <ScrollView>
-      
+
      </ScrollView>
       <Footer/>
     </View>
@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "700",
     fontSize: 28,
+    borderBottomWidth:2,
+    paddingBottom:8,
+    marginBottom:8
   },
 });
 export default Page

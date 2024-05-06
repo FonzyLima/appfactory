@@ -38,20 +38,16 @@ const Page = () => {
       if(value!==null){
         setFaves(value)
       }
-      
-      console.log("hey",faves)
     } catch (e) {
-      // error reading value
     }
   };
   const storeData = async (value: any) => {
     try {
       
       console.log(faves)
-      await AsyncStorage.setItem('my-fave', JSON.stringify(value));
+      await AsyncStorage.setItem('my-fave', value);
       console.log("success");
     } catch (e) {
-      // saving error
       console.log(e);
     }
   };
@@ -59,7 +55,7 @@ const Page = () => {
     setFavorite(!favorite);
     const updatedFaves = [...faves, newRecipe];
     setFaves(updatedFaves);
-    storeData(updatedFaves);
+    storeData(JSON.stringify(newRecipe));
   };
 
   

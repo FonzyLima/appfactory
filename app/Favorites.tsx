@@ -31,9 +31,12 @@ const Page = () => {
     try {
       const value = await AsyncStorage.getItem("my-fave");
       // await AsyncStorage.clear()
-      const newFaves = JSON.parse(value);
-      newFaves.ingredientLines = JSON.parse(newFaves.ingredientLines);
-      setFaves(newFaves);
+      if(value){
+        const newFaves = JSON.parse(value);
+        newFaves.ingredientLines = JSON.parse(newFaves.ingredientLines);
+        setFaves(newFaves);
+      }
+      
 
     } catch (e) {
       console.log(e);

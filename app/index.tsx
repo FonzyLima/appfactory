@@ -81,14 +81,7 @@ const Page = () => {
           recipe.map((hit, index) => (
             <Recipe
               key={index}
-              name={hit.label}
-              calories={hit.calories}
-              image={hit.image}
-              source={hit.source}
-              ingredientList={hit.ingredientLines}
-              protein={hit.nutrients.protein}
-              carbs={hit.nutrients.carbs}
-              fat={hit.nutrients.fat}
+              recipe={hit}
             />
           ))
         ) : search ? (

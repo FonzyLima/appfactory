@@ -13,23 +13,28 @@ import { useState, useEffect } from "react";
 interface Recipe {
   label: string;
   healthLabels: string[];
-  ingredientList: string[];
+  ingredientLines: string[];
   calories: number;
   image: string;
   source: string;
   dishType: string;
-
-  protein: number;
-  fat: number;
-  carbs: number;
+  nutrients: {
+    protein: number;
+    fat: number;
+    carbs: number;
+  };
 }
+
 const Page = () => {
   const [faves, setFaves] = useState<Recipe>();
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem("my-fave");
       // await AsyncStorage.clear()
-      setFaves(JSON.parse(value));
+      const newFaves = JSON.parse(value);
+      newFaves.ingredientLines = JSON.parse(newFaves.ingredientLines);
+      setFaves(newFaves);
+
     } catch (e) {
       console.log(e);
     }
@@ -37,7 +42,8 @@ const Page = () => {
   useEffect(() => {
     getData();
   }, []);
-  const parsedIngredientList = faves?.ingredientList ? JSON.parse(faves?.ingredientList) : [];
+
+ 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Here are your favorite Recipes</Text>
@@ -45,18 +51,13 @@ const Page = () => {
         {/* <Recipe name={faves[0].label} calories={faves.calories} source={faves.source} image={faves.image} ingredientList={faves.ingredientLines} protein={faves.protein} carbs={faves.carbs} fat={faves.fat}/>
          */}
         {/* {faves ? faves.map((fave,i)=><Text key={i}>{fave[0].label}</Text>):null} */}
+        {/* <Text>{faves?.image}</Text> */}
         {faves ? (
           <Recipe
-            name={faves?.label}
-            calories={faves?.calories}
-            source={faves?.source}
-            image={faves?.image}
-            ingredientList={parsedIngredientList}
-            protein={faves?.protein}
-            carbs={faves?.carbs}
-            fat={faves?.fat}
+            recipe={faves}
           />
-        ) : null}
+     
+        ) : <Text style={styles.nofaves}>You have no favorites yet</Text>}
       </ScrollView>
       <Footer />
     </View>
@@ -77,6 +78,10 @@ const styles = StyleSheet.create({
     paddingBottom:8,
     marginBottom:8
   },
+  nofaves:{
+    textAlign:"center",
+
+  }
 });
 
 export default Page;

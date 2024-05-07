@@ -18,16 +18,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 interface Recipe {
   label: string;
   healthLabels: string[];
-  ingredientList: string[];
+  ingredientLines: string[];
   calories: number;
   image: string;
   source: string;
   dishType: string;
-
-  protein: number;
-  fat: number;
-  carbs: number;
+  nutrients: {
+    protein: number;
+    fat: number;
+    carbs: number;
+  };
 }
+
 const Page = () => {
   const [faves, setFaves] = useState<Recipe>();
   const [favorite, setFavorite] = useState(false);
@@ -67,7 +69,7 @@ const Page = () => {
 
   useEffect(() => {
     getData();
-    console.log("changege");
+
   }, []);
 
   const {
@@ -76,12 +78,12 @@ const Page = () => {
     image,
     source,
     ingredientList,
-    protein,
-    carbs,
-    fat,
+    nutrients,
     calories,
   } = useLocalSearchParams();
   const parsedIngredientList = ingredientList ? JSON.parse(ingredientList) : [];
+  const parsedNutrients = nutrients ? JSON.parse(nutrients) : {};
+
   return (
     <View style={styles.container}>
       <View>
@@ -106,12 +108,14 @@ const Page = () => {
                   addFavorite({
                     label: name,
                     image: image,
-                    source: source,
-                    protein: protein,
-                    carbs: carbs,
-                    fat: fat,
+                    source: source,  
+                    nutrients:{
+                      protein: parsedNutrients.protein,
+                      carbs: parsedNutrients.carbs,
+                      fat: parsedNutrients.fat,
+                    },
                     calories: calories,
-                    ingredientList: ingredientList,
+                    ingredientLines: ingredientList,
                   })
                 }
               >
@@ -139,7 +143,7 @@ const Page = () => {
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {Math.round(Number(protein))}g protein
+                  {Math.round(Number(parsedNutrients.protein))}g protein
                 </Text>
               </View>
             </View>
@@ -149,7 +153,7 @@ const Page = () => {
                   <Icon name="plate-wheat" size={18} color="#000" />
                 </View>
                 <Text style={{ fontSize: 16 }} numberOfLines={1}>
-                  {Math.round(Number(carbs))}g carbs
+                  {Math.round(Number(parsedNutrients.carbs))}g carbs
                 </Text>
               </View>
               <View style={styles.nutrientBox}>
@@ -161,7 +165,7 @@ const Page = () => {
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {Math.round(Number(fat))}g fat
+                  {Math.round(Number(parsedNutrients.fat))}g fat
                 </Text>
               </View>
             </View>
@@ -170,11 +174,11 @@ const Page = () => {
         <View style={styles.ingredientsContainer}>
           <Text style={styles.boldText}>Ingredients:</Text>
           <View>
-            {parsedIngredientList.map((ingredient: string, i: number) => (
+            {parsedIngredientList? parsedIngredientList.map((ingredient: string, i: number) => (
               <Text style={{ fontSize: 16 }} key={i}>
                 {ingredient}
               </Text>
-            ))}
+            )):null}
           </View>
         </View>
         <View style={{ height: 40, width: "100%" }} />

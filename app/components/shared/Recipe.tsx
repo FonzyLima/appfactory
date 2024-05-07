@@ -2,61 +2,62 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Link, router, useRouter } from "expo-router";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
-const Recipe = ({
-  name,
-  calories,
-  image,
-  source,
-  ingredientList,
-  protein,
-  carbs,
-  fat,
-}: {
-  name: string;
+interface Recipe {
+  label: string;
+  healthLabels: string[];
+  ingredientLines: string[];
   calories: number;
   image: string;
   source: string;
-  ingredientList: string[];
-  protein: number;
-  carbs: number;
-  fat: number;
+  dishType: string;
+  nutrients: {
+    protein: number;
+    fat: number;
+    carbs: number;
+  };
+}
+
+const Recipe = ({
+  recipe
+}: {
+  recipe:Recipe;
 }) => {
   const router = useRouter();
-  const encodedURL = encodeURIComponent(image);
+  const encodedURL = encodeURIComponent(recipe.image);
+
   return (
     <TouchableOpacity
       onPress={() =>
         router.push({
-          pathname: `/${name}`,
+          pathname: `/${recipe.label}`,
           params: {
-            name: name,
-            calories: calories,
+            name: recipe.label,
+            calories: recipe.calories,
             image: encodedURL,
-            source: source,
-            ingredientList: JSON.stringify(ingredientList),
-            protein:protein,
-            carbs:carbs,
-            fat:fat,
+            source: recipe.source,
+            ingredientList: recipe.ingredientLines ? JSON.stringify(recipe.ingredientLines) : recipe.ingredientLines,
+            nutrients:JSON.stringify(recipe.nutrients)
+    
           },
         })
       }
     >
       <View style={styles.container}>
      
-        <Image style={styles.image} source={{ uri: image }} />
+        <Image style={styles.image} source={{ uri: recipe.image }} />
         <View style={styles.bottomContainer}>
           <Text selectable={true} style={styles.recipeName}>
-            {name}
+            {recipe.label}
           </Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <Text style={styles.grayText}>{source}</Text>
+            <Text style={styles.grayText}>{recipe.source}</Text>
             <View
               style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
             >
               <Icon name="fire" size={16} color="#A1AEB1" />
-              <Text style={styles.grayText}>{Math.round(calories)} kcal</Text>
+              <Text style={styles.grayText}>{Math.round(recipe.calories)} kcal</Text>
             </View>
           </View>
         </View>

@@ -6,7 +6,7 @@ const Footer = () => {
   const router = useRouter()
   return (
     <View style={style.container}>
-      <TouchableOpacity style={style.iconContainer} onPress={()=>router.replace("/Home")}>
+      <TouchableOpacity style={style.iconContainer} onPress={()=>router.replace("/")}>
         <Icon name="bowl-rice" size={30} color="#A1AEB1" />
         <Text style={style.iconText}>Recipes</Text>
       </TouchableOpacity>
@@ -24,6 +24,7 @@ const Footer = () => {
 const style = StyleSheet.create({
   container: {
     width: Dimensions.get('window').width,
+    height:100,
     position: "absolute",
     bottom: 0,
     flexDirection:"row",

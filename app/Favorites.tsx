@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 interface Recipe {
   label: string;
   healthLabels: string[];
-  ingredientLines: string[];
+  ingredientList: string[];
   calories: number;
   image: string;
   source: string;
@@ -37,6 +37,7 @@ const Page = () => {
   useEffect(() => {
     getData();
   }, []);
+  const parsedIngredientList = faves?.ingredientList ? JSON.parse(faves?.ingredientList) : [];
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Here are your favorite Recipes</Text>
@@ -50,7 +51,7 @@ const Page = () => {
             calories={faves?.calories}
             source={faves?.source}
             image={faves?.image}
-            ingredientList={faves?.ingredientLines}
+            ingredientList={parsedIngredientList}
             protein={faves?.protein}
             carbs={faves?.carbs}
             fat={faves?.fat}
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 28,
     borderBottomWidth:2,
+    borderBottomColor:"black",
     paddingBottom:8,
     marginBottom:8
   },

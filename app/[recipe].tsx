@@ -18,52 +18,58 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 interface Recipe {
   label: string;
   healthLabels: string[];
-  ingredientLines: string[];
+  ingredientList: string[];
   calories: number;
   image: string;
   source: string;
   dishType: string;
-  
+
   protein: number;
   fat: number;
   carbs: number;
-  
 }
 const Page = () => {
-  const [faves,setFaves] = useState<Recipe[]>([])
+  const [faves, setFaves] = useState<Recipe>();
   const [favorite, setFavorite] = useState(false);
   const getData = async () => {
     try {
-      const value = await AsyncStorage.getItem('my-fave');
-      if(value!==null){
-        setFaves(value)
+      const value = await AsyncStorage.getItem("my-fave");
+      if (value !== null) {
+        setFaves(JSON.parse(value));
+        if (JSON.parse(value).label == name) {
+          setFavorite(true);
+        }
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   };
   const storeData = async (value: any) => {
     try {
-      
-      console.log(faves)
-      await AsyncStorage.setItem('my-fave', value);
-      console.log("success");
+      await AsyncStorage.setItem("my-fave", value);
+      setFaves(value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const removeFavorite = async () => {
+    try {
+      await AsyncStorage.removeItem("my-fave");
+      setFavorite(false);
     } catch (e) {
       console.log(e);
     }
   };
   const addFavorite = (newRecipe: Recipe) => {
-    setFavorite(!favorite);
-    const updatedFaves = [...faves, newRecipe];
-    setFaves(updatedFaves);
+    setFavorite(true);
+    // const updatedFaves = [...faves, newRecipe];
+    // setFaves(updatedFaves);
     storeData(JSON.stringify(newRecipe));
   };
 
-  
-  
   useEffect(() => {
     getData();
+    console.log("changege");
   }, []);
-  
+
   const {
     recipe,
     name,
@@ -83,35 +89,35 @@ const Page = () => {
       </View>
       <ScrollView
         contentContainerStyle={{
-          paddingVertical: 16,
+          paddingTop: 16,
+          paddingBottom: 64,
         }}
       >
         <View style={styles.headerContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.nameText}>{name}</Text>
-            <TouchableOpacity
-              onPress={() =>
-                addFavorite({
-                  label: name,
-                  image: image,
-                  source: source,
-                  protein: protein,
-                  carbs: carbs,
-                  fat: fat,
-                  calories: calories,
-                })
-              }
-            >
-              {favorite ? (
+            {favorite ? (
+              <TouchableOpacity onPress={() => removeFavorite()}>
                 <Heart name="heart" size={30} color="red" />
-              ) : (
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() =>
+                  addFavorite({
+                    label: name,
+                    image: image,
+                    source: source,
+                    protein: protein,
+                    carbs: carbs,
+                    fat: fat,
+                    calories: calories,
+                    ingredientList: ingredientList,
+                  })
+                }
+              >
                 <Heart name="hearto" size={30} color="red" />
-              )}
-            </TouchableOpacity>
-            {/* <TouchableOpacity onPress={()=>storeData({label:"helloss"})}>
-              {favorite ? <Heart name="heart" size={30} color="red" />: <Heart name="hearto" size={30} color="red" /> }
-              
-            </TouchableOpacity> */}
+              </TouchableOpacity>
+            )}
           </View>
           <Text style={styles.grayText}>{source}</Text>
           <View style={styles.nutrientsContainer}>
@@ -171,6 +177,7 @@ const Page = () => {
             ))}
           </View>
         </View>
+        <View style={{ height: 40, width: "100%" }} />
       </ScrollView>
       <Footer />
     </View>
@@ -185,8 +192,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 210,
     resizeMode: "cover",
-    borderTopLeftRadius: 12, // Top-left border radius
-    borderTopRightRadius: 12, // Top-right border radius
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   headerContainer: {
     paddingHorizontal: 16,

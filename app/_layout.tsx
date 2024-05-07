@@ -50,10 +50,10 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="Home" options={{title:"Cilantro",headerTitleAlign:"center"}}/>
+        <Stack.Screen name="index" options={{title:"Cilantro",headerTitleAlign:"center"}}/>
         <Stack.Screen name="[recipe]" options={({ route }:{route:any}) => ({ title: decodeURIComponent(route.params.recipe), headerTitleAlign: "center" })}/>
-        <Stack.Screen name="Favorites"/>
-        <Stack.Screen name="Grocery"/>
+        <Stack.Screen name="Favorites" options={{title:"Favorites",headerTitleAlign:"center"}}/>
+        <Stack.Screen name="Grocery" options={{title:"Grocery List",headerTitleAlign:"center"}}/>
       </Stack>
     </ThemeProvider>
   );

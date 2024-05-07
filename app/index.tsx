@@ -67,6 +67,7 @@ const Page = () => {
           style={{ flexGrow: 1 }}
           maxLength={36}
           placeholder="Search Recipe Here"
+          placeholderTextColor={"#A1AEB1"}
           value={searchInput}
           onChangeText={(e) => setSearchInput(e)}
           onSubmitEditing={onSearchSubmit}
@@ -95,7 +96,7 @@ const Page = () => {
           <Image style={{height:80,width:80}} source={require("@/assets/images/loading.gif")}/>
           </View>
 
-        ) :  <Text>Search to show recipes</Text>}
+        ) :  <Text>Search to show recipes...</Text>}
       </ScrollView>
       <View />
       <Footer />
@@ -116,8 +117,9 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 6,
-  
-    elevation:16
+    shadowOpacity:0.3,
+    elevation:16,
+    shadowOffset:{width:0,height:1}
   },
 });
 export default Page;
